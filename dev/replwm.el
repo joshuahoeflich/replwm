@@ -5,6 +5,11 @@
 
 (defun replwm/load-project-package ()
   "Load the files which define our project into Sly."
-  (sly-eval '(asdf:load-system 'replwm/test)))
+  (interactive)
+  (sly-eval '(common-lisp:progn
+              (common-lisp:require 'asdf)
+              (asdf:load-system 'clx)
+              (asdf:load-system 'wm-test)
+              (asdf:load-system 'replwm/test))))
 
 (add-hook 'sly-connected-hook 'replwm/load-project-package)
