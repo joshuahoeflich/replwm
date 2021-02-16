@@ -13,7 +13,7 @@ None of this is finished yet, of course, and contributions are welcome. The proj
 
 ## Research-ish Thoughts
 
-What would a DSL extension language implemented with Racket look like? What about Emacs integration? How do we make better cross-lisp integration possible
+What would a DSL extension language implemented with Racket look like? What about Emacs integration? How do we make better cross-lisp integration possible?
 
 ## Developing
 You'll need:
