@@ -1,0 +1,3 @@
+#!/bin/sh
+rlwrap sbcl --noinform \
+  --eval "(asdf:load-system 'replwm/test)"
