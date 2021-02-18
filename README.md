@@ -10,7 +10,7 @@ You'll need:
 - libXinerama
 - Xephyr (for experimenting)
 
-Use `make xrepl` to spin up an X-Server inside this one which you can use to develop.
+Run `DISPLAY=:0 Xephyr :1` to spin up an X-Server inside this one which you can use to develop.
 
 ## Testing
 

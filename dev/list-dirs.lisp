@@ -6,8 +6,9 @@
    (reduce
     (lambda (acc el)
       (let ((dir-string (directory-namestring el)))
-        (when dir-string
-          (concatenate 'string (string-right-trim "/" dir-string) ":" acc))))
+        (if dir-string
+            (concatenate 'string (string-right-trim "/" dir-string) ":" acc)
+            acc)))
     (uiop:directory* "src/*")
     :initial-value "")))
 

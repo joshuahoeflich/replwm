@@ -2,13 +2,13 @@
 build: ## Compile the project.
 	@ :
 
-.PHONY: xrepl
-xrepl: ## Open Xephyr in display :1 and a shell for running programs there.
-	@ DISPLAY="${ORIGINAL_DISPLAY}" sbcl --script dev/xrepl.lisp
-
 .PHONY: help
 help: ## Display this help message and then exit.
 	@ sbcl --script dev/help.lisp
+
+.PHONY: xrepl
+xrepl: ## Open up an X server inside this one in which you can hack.
+	@ DISPLAY=:0 Xephyr :1
 
 .PHONY: test-tests
 test-tests:
