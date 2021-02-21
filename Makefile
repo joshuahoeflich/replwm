@@ -10,9 +10,14 @@ help: ## Display this help message and then exit.
 xrepl: ## Open up an X server inside this one in which you can hack.
 	@ DISPLAY=:0 Xephyr :1
 
+.PHONY: install-sbcl
+install-sbcl: ## Install SBCL onto an Ubuntu system.
+	@ sh ci/install-sbcl.sh
+
 .PHONY: test-tests
-test-tests:
-	@ cd src/wm-test && sbcl \
-		--noinform \
-		--load wm-test-check-lib.lisp \
-		--non-interactive
+test-tests: ## Test our testing library.
+	@ sh ci/test-tests.sh
+
+.PHONY: test-wm
+test-wm: ## Test the window manager.
+	@ sh ci/run-tests.sh
