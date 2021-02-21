@@ -42,7 +42,6 @@
       (with-unix-streams
         (with-env (("DISPLAY" ":1"))
           (with-replwm (format t "Hello!~%"))))
-    (declare (ignore stderr))
     (suite
       (test (search "Hello!" stdout))
       (test (not (search "Fatal error on startup." stderr)))
