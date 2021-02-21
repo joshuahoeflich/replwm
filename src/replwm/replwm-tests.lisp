@@ -34,6 +34,7 @@
       (with-unix-streams
         (with-env (("DISPLAY" "non-existing"))
           (with-replwm (format t "Hello!~%"))))
+    (format t "~S~%" stderr)
     (suite
       (test (not (search "Hello!" stdout)))
       (test (search "Fatal error on startup." stderr))
@@ -44,6 +45,7 @@
       (with-unix-streams
         (with-env (("DISPLAY" ":1"))
           (with-replwm (format t "Hello!~%"))))
+    (format t "~S~%" stderr)
     (suite
       (test (search "Hello!" stdout))
       (test (not (search "Fatal error on startup." stderr)))
