@@ -7,4 +7,5 @@ CL_SOURCE_REGISTRY="$REGISTRY_PATHS" sbcl --noinform \
   --load "$PWD"/ci/system.lisp \
   --eval "(in-package #:replwm-tests)" \
   --eval "(run-suites-and-exit x11-suite)"
-pkill Xvfb;
+printf "%s\n" "I ran!"
+# pkill Xvfb;
