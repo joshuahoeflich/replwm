@@ -17,5 +17,7 @@ jobs:
       run: make test-tests
     - name: Install Xvfb
       run: sudo apt-get install xvfb
+    - name: Compile the project
+      run: make compile-project
     - name: Test the Window Manager
-      run: sh ci/run-tests.sh
+      run: make test-wm

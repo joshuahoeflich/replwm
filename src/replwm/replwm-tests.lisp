@@ -22,7 +22,9 @@
   `((lambda ()
       (let ((*standard-output* (make-string-output-stream))
             (*error-output* (make-string-output-stream)))
-        ,@code
+        (handler-case
+            (progn ,@code)
+          (t (err) (format *error-output* "~S" err)))
         (values
          (get-output-stream-string *standard-output*)
          (get-output-stream-string *error-output*))))))

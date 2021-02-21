@@ -18,6 +18,10 @@ install-sbcl: ## Install SBCL onto an Ubuntu system.
 test-tests: ## Test our testing library.
 	@ sh ci/test-tests.sh
 
+.PHONY: compile-project
+compile-project: ## Compile the code in our project.
+	@ sh ci/compile-project.sh
+
 .PHONY: test-wm
 test-wm: ## Test the window manager.
 	@ sh ci/run-tests.sh
