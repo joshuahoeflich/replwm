@@ -6,5 +6,5 @@ CL_SOURCE_REGISTRY="$REGISTRY_PATHS" sbcl --noinform \
   --non-interactive \
   --load "$PWD"/ci/system.lisp \
   --eval "(in-package #:replwm-tests)" \
-  --eval "(run-suites x11-suite)"
+  --eval "(x11-suite)"
 pkill Xvfb;
