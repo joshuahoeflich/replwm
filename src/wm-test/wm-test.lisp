@@ -95,4 +95,4 @@
 
 (defmacro run-suites-and-exit (&rest suite-names)
   `(let ((results (run-suites ,@suite-names)))
-     (exit :code (if (suite-problems-p results) 1 0))))
+     (sb-ext:exit :code (if (suite-problems-p results) 1 0))))
