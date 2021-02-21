@@ -134,7 +134,3 @@
   (assert (= 1 (suite-results-errored (suite (test (error "hi"))))))
 
   (assert (= 2 (suite-results-passed (side-effect-suite)))))
-
-(assert (string= (with-output-to-string (*standard-output*)
-                   (run-suites success-suite))
-                 (format nil "Running test suites: SUCCESS-SUITE~%1 passed, 0 failed, 0 errored.~%")))
