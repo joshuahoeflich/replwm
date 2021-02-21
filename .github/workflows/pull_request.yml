@@ -9,13 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
     - name: Install SBCL
-      run: |
-        curl -LJ0 https://github.com/roswell/sbcl_bin/releases/download/2.1.1/sbcl-2.1.1-x86-64-linux-binary.tar.bz2 > sbcl.tar.bz2
-        tar -xvf sbcl.tar.bz2
-        cd sbcl-2.1.1-x86-64-linux
-        sudo sh install.sh
-        cd ..
-        rm -rf sbcl-2.1.1-x86-64-linux
+      run: make install-sbcl
     - name: Test Testing Library
       run: make test-tests
+    - name: Install Xvfb
+      run: sudo apt-get install xvfb
+    - name: Compile the project
+      run: make compile-project
+    - name: Test the Window Manager
+      run: make test-wm

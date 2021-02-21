@@ -129,8 +129,8 @@
     (princ "This test has side effects that run in its body!")
     (test (= 3 3)))
 
-  (assert (= 2 (suite-results-passed (side-effect-suite)))))
+  (assert (= 1 (suite-results-passed (suite (test (= 1 1))))))
+  (assert (= 1 (suite-results-failed (suite (test (= 1 0))))))
+  (assert (= 1 (suite-results-errored (suite (test (error "hi"))))))
 
-(assert (string= (with-output-to-string (*standard-output*)
-                   (run-suites success-suite))
-                 (format nil "Running test suites: SUCCESS-SUITE~%1 passed, 0 failed, 0 errored.~%")))
+  (assert (= 2 (suite-results-passed (side-effect-suite)))))

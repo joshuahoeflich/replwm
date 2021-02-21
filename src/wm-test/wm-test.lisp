@@ -1,6 +1,7 @@
 (defpackage #:wm-test
   (:use #:common-lisp)
-  (:export #:xtest #:test #:defsuite #:run-suites #:run-suites-and-exit))
+  (:export #:xtest #:test #:defsuite #:suite
+           #:run-suites #:run-suites-and-exit))
 
 (in-package #:wm-test)
 
@@ -71,19 +72,19 @@
      (merge-suites! suite el)))
   suite)
 
+(defmacro suite (&body body)
+  `(reduce #'update-suite-results! (list ,@body)
+           :initial-value (make-suite-results)))
+
 (defmacro defsuite (name &body body)
-  `(defun ,name ()
-     (reduce #'update-suite-results! (list ,@body)
-             :initial-value (make-suite-results))))
+  `(defun ,name () (suite ,@body)))
 
 (defmacro run-suites (&rest suite-names)
   `(progn
      (format t "Running test suites: ~@{~A~^, ~}~%" ,@(mapcar #'symbol-name suite-names))
-     (let ((results (reduce #'update-suite-results!
-                     (list ,@(mapcar #'list suite-names))
-                     :initial-value (make-suite-results))))
-       (format t "~A" results)
-       results)))
+     (reduce #'update-suite-results!
+                             (list ,@(mapcar #'list suite-names))
+                             :initial-value (make-suite-results))))
 
 (defun suite-problems-p (suite-result)
   (or
@@ -92,4 +93,5 @@
 
 (defmacro run-suites-and-exit (&rest suite-names)
   `(let ((results (run-suites ,@suite-names)))
-     (exit :code (if (suite-problems-p results) 1 0))))
+     (format t "~A" results)
+     (sb-ext:exit :code (if (suite-problems-p results) 1 0))))

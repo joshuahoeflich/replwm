@@ -1,5 +1,0 @@
-#!/bin/sh
-rlwrap sbcl --noinform \
-  --load "$PWD"/src/replwm/system.lisp \
-  --load "$PWD"/src/replwm/replwm.asd \
-  --eval "(asdf:load-system 'replwm/test)"
