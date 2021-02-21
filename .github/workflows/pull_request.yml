@@ -18,4 +18,4 @@ jobs:
     - name: Install Xvfb
       run: sudo apt-get install xvfb
     - name: Test the Window Manager
-      run: make test-wm
+      run: sh ci/run-tests.sh
