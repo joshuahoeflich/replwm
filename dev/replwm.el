@@ -6,6 +6,6 @@
 (defun replwm/load-project-package ()
   "Load the files which define our project into Sly."
   (interactive)
-  (sly-eval `(common-lisp:load ,(getenv "DEVLISP"))))
+  (sly-eval `(common-lisp:load ,(getenv "CILISP"))))
 
 (add-hook 'sly-connected-hook 'replwm/load-project-package)
