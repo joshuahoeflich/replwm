@@ -1,0 +1,3 @@
+[submodule "common-lisp/clx"]
+	path = common-lisp/clx
+	url = https://github.com/sharplispers/clx
