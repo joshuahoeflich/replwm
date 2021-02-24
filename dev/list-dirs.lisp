@@ -9,7 +9,7 @@
         (if dir-string
             (concatenate 'string (string-right-trim "/" dir-string) ":" acc)
             acc)))
-    (uiop:directory* "src/*")
+    (uiop:directory* "common-lisp/*")
     :initial-value "")))
 
 (write-line (list-dirs))
