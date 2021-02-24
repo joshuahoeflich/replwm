@@ -5,21 +5,6 @@ and provide macros to simplify the process of setup and teardown.
 
 (in-package #:replwm)
 
-(defparameter *display* nil
-  "Our X server's display.")
-
-(defparameter *screen* nil
-  "Our X server's screen.")
-
-(defparameter *root* nil
-  "Our X server's root.")
-
-(defparameter *handlers*
-  (make-list (length xlib::*event-key-vector*)
-             :initial-element #'(lambda (&rest args)
-                                  (declare (ignore args))))
-  "Our of X11 event handlers.")
-
 (defun become-window-manager! ()
   (xlib:display-finish-output *display*)
   (xlib:intern-atom *display* :_MOTIF_WM_HINTS)

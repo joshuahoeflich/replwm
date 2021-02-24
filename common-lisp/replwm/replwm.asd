@@ -1,6 +1,7 @@
 (asdf:defsystem #:replwm
   :serial t
   :components ((:file "packages")
+               (:file "src/globals")
                (:file "src/startup")
                (:file "src/events")
                (:file "src/keys")
@@ -9,6 +10,7 @@
 (asdf:defsystem #:replwm/test
   :serial t
   :components ((:file "packages")
+               (:file "src/globals")
                (:file "src/startup")
                (:file "src/events")
                (:file "src/keys")
