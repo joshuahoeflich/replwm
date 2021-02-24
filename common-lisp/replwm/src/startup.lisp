@@ -51,8 +51,7 @@ and provide macros to simplify the process of setup and teardown.
 (defun handle-events ()
   (do ((event (process-x-event!)
               (process-x-event!)))
-      ((eq event :quit))
-    (format t "~S~%" event)))
+      ((eq event :quit))))
 
 (defmacro with-wm-state (&body code)
   `(unwind-protect
