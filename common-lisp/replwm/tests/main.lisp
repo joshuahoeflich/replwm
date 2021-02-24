@@ -3,7 +3,7 @@
 (defsuite x11-error-suite
   (multiple-value-bind (stdout stderr)
       (with-unix-streams
-        (with-env (("DISPLAY" "non-existing"))
+        (with-env (("DISPLAY" ":72"))
           (with-wm-state (format t "Hello!~%"))))
     (suite
       (test (not (search "Hello!" stdout)))

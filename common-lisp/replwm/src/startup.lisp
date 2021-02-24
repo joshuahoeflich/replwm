@@ -45,11 +45,14 @@ and provide macros to simplify the process of setup and teardown.
   (setf *display* nil *screen* nil *root* nil)
   (write-line "Moriturus te saluto."))
 
+(defun process-x-event! ()
+  (xlib:process-event *display* :handler *handlers* :discard-p t))
+
 (defun handle-events ()
-  (do ()
-      ((eq
-        (xlib:process-event *display* :handler *handlers* :discard-p t)
-        :quit))))
+  (do ((event (process-x-event!)
+              (process-x-event!)))
+      ((eq event :quit))
+    (format t "~S~%" event)))
 
 (defmacro with-wm-state (&body code)
   `(unwind-protect
