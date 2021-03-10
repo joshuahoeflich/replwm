@@ -1,7 +1,8 @@
 (defpackage #:replwm
   (:use #:common-lisp)
-  (:export #:main
-           #:with-wm-state))
+  (:export #:with #:with-catch))
 
 (defpackage #:replwm-tests
-  (:use #:common-lisp #:replwm #:wm-test))
+  (:use #:common-lisp
+        #:replwm
+        #:wm-test))

@@ -1,17 +1,10 @@
 (asdf:defsystem #:replwm
   :serial t
   :components ((:file "packages")
-               (:file "src/startup")
-               (:file "src/events")
-               (:file "src/keys")
-               (:file "src/main")))
+               (:file "src/utils")))
 
 (asdf:defsystem #:replwm/test
   :serial t
   :components ((:file "packages")
-               (:file "src/startup")
-               (:file "src/events")
-               (:file "src/keys")
-               (:file "src/main")
-               (:file "tests/macros")
-               (:file "tests/main")))
+               (:file "src/utils")
+               (:file "test/utils")))
