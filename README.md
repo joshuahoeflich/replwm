@@ -11,10 +11,6 @@ Stumpwm is a multi-paradigm tiling window manager descended from Ratpoison with 
 
 None of this is finished yet, of course, and contributions are welcome. The project is currently in the pre-alpha phase (nothing is implemented yet); if you’re a Lisp hacker, feel free to contribute ideas and/or code!
 
-## Research-ish Thoughts
-
-What would a DSL extension language implemented with Racket look like? What about Emacs integration? How do we make better cross-lisp integration possible?
-
 ## Developing
 You'll need:
 - sbcl
@@ -23,8 +19,48 @@ You'll need:
 - libX11
 - libXinerama
 - Xephyr (for experimenting)
+- Direnv (for handling environment variables)
 
-Run `DISPLAY=:0 Xephyr :1` to spin up an X-Server inside this one which you can use to develop.
+To get started, clone the repository *recursively* with the following command:
+
+```
+git clone --recursive https://github.com/joshuahoeflich/replwm
+```
+
+Why do you need to add that flag? Simple: We use `git submodules` to ensure that all dependencies for this project besides the system-level ones *live inside this repository.* You don't need to worry about QuickLisp or any other package manager that relies on transient state in the `$HOME` directory; everything you need lives in the folder you clone.
+
+Once you're in the repository, make sure to source the environment variables in the `.envrc` file into your shell. Once you're finished hacking, make sure to unsource them as well, such that you don't have any surprising errors while working on other projects. [I use direnv to automate that process away.](https://direnv.net/) [If you use Emacs, check out emacs-direnv for some nice integrations.](https://github.com/wbolster/emacs-direnv) You can compile a working binary with
+
+```
+make build
+```
+
+And get more information about the things you can do with
+
+```
+make help
+```
+
+Note that the project isn't finished yet, so `make build` is a stub.
 
 ## Testing
+Instead of relying on a framework like 5AM, we use a simple, composable testing library called `wm-test` that lives in `src/wm-test`.
 
+
+## Style Guide
+- Use the `with` macro instead of `let/let*` in the project. If you're familiar with Clojure, `with` works the way [let does in that language](https://clojuredocs.org/clojure.core/let) modulo the difference between vectors and lists; if that documentation doesn't help, feel free to ask the maintainer for help.
+- Use `with-catch` instead of `handler-case` unless you specifically need to handle multiple separate errors. Instead of writing:
+    ```lisp
+    (handler-case
+      (progn
+        (format t "Hello!~%")
+        (error "This creates an error :("))
+      (t (err) (format t "Error: ~A~%" err)))
+    ```
+Simply write:
+```lisp
+(with-catch (err (format t "Error: ~A~%" err))
+  (format t "Hello!~%")
+  (error "This creates an error :("))
+```
+Again, feel free to reach out to the maintainer if you find the macro confusing.
