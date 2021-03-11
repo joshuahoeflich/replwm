@@ -29,10 +29,7 @@ git clone --recursive https://github.com/joshuahoeflich/replwm
 
 Why do you need to add that flag? Simple: We use `git submodules` to ensure that all dependencies for this project besides the system-level ones *live inside this repository.* You don't need to worry about QuickLisp or any other package manager that relies on transient state in the `$HOME` directory; everything you need lives in the folder you clone.
 
-Once you're in the repository, make sure to source the environment variables in the `.envrc` file into your shell. Once you're finished hacking, make sure to unsource them as well, such that you don't have any surprising errors while working on other projects. [I use direnv to automate that process away.](https://direnv.net/) [If you use Emacs, check out direnv.el for some nice integrations.](https://github.com/jml/direnv-el)
-
-
-You can compile a working binary with
+Once you're in the repository, make sure to source the environment variables in the `.envrc` file into your shell. Once you're finished hacking, make sure to unsource them as well, such that you don't have any surprising errors while working on other projects. [I use direnv to automate that process away.](https://direnv.net/) [If you use Emacs, check out emacs-direnv for some nice integrations.](https://github.com/wbolster/emacs-direnv) You can compile a working binary with
 
 ```
 make build
@@ -54,7 +51,7 @@ Instead of relying on a framework like 5AM, we use a simple, composable testing 
 - Use the `with` macro instead of `let/let*` in the project. If you're familiar with Clojure, `with` works the way [let does in that language](https://clojuredocs.org/clojure.core/let) modulo the difference between vectors and lists; if that documentation doesn't help, feel free to ask the maintainer for help.
 - Use `with-catch` instead of `handler-case` unless you specifically need to handle multiple separate errors. Instead of writing:
     ```lisp
-    (handler-case 
+    (handler-case
       (progn
         (format t "Hello!~%")
         (error "This creates an error :("))
