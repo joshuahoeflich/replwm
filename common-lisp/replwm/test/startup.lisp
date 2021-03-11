@@ -5,23 +5,21 @@
 ;; use case!
 (defsuite startup-error-suite
   (test
-   (string=
-    (with (*error-output* (make-string-output-stream))
-          (setup!)
-          (get-output-stream-string *error-output*))
-    (format nil
-            "Fatal error: Another window manager is running.~%Exiting replwm.")))
+   (search
+    "ACCESS-ERROR"
+    (let ((*error-output* (make-string-output-stream)))
+      (setup!)
+      (get-output-stream-string *error-output*))))
   (test
-   (string=
-    (with (*error-output* (make-string-output-stream))
-          (start-wm!)
-          (get-output-stream-string *error-output*))
-    (format nil
-            "Fatal error: Another window manager is running.~%Exiting replwm.")))
+   (search
+    "ACCESS-ERROR"
+    (let ((*error-output* (make-string-output-stream)))
+      (start-wm!)
+      (get-output-stream-string *error-output*))))
   (sb-posix:setenv "DISPLAY" ":2" 1)
-  (test (string=
-         (with (*error-output* (make-string-output-stream))
-               (setup!)
-               (get-output-stream-string *error-output*))
-         (format nil "Fatal error: Couldn't open X11.~%Exiting replwm.")))
+  (test (search
+         "Socket error"
+         (let ((*error-output* (make-string-output-stream)))
+           (setup!)
+           (get-output-stream-string *error-output*))))
   (sb-posix:setenv "DISPLAY" ":0" 1))
