@@ -1,7 +1,7 @@
 (in-package #:replwm)
 
 (defun log-fatal-error! (err)
-  (format *error-output* "Fatal error on startup: ~A~%Exiting replwm." err))
+  (format *error-output* "Fatal error: ~A~%Exiting replwm." err))
 
 (defun open-x11! ()
   (with-catch (err
@@ -29,3 +29,18 @@
     (multiple-value-bind (display screen root) (open-x11!)
       (check-other-wm! display root)
       (values display screen root))))
+
+(defun handle-x11-event! (display screen root)
+  (declare (ignore display screen root))
+  :quit)
+
+(defun event-loop (display screen root)
+  (loop :for event = (handle-x11-event! display screen root)
+        :until (eq event :quit)))
+
+(defun start-wm! ()
+  (multiple-value-bind (display screen root) (setup!)
+    (when display
+      (unwind-protect
+           (event-loop display screen root)
+        (xlib:close-display display)))))
