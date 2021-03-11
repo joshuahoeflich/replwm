@@ -5,9 +5,6 @@
     (funcall fn)
     (get-output-stream-string *error-output*)))
 
-;; Because running this suite requires another window manager to exist on
-;; DISPLAY :0, we don't yet execute it in our CI pipeline. Pull requests
-;; welcome!
 (defsuite startup-error-suite
   (test
    (string= (format nil "Another window manager is running.~%")
@@ -22,3 +19,7 @@
   (sb-posix:setenv "DISPLAY" ":1" 1)
   (test (wm-state-p (setup-replwm!)))
   (sb-posix:setenv "DISPLAY" ":0" 1))
+
+(defsuite setup-suite
+  (startup-error-suite)
+  (startup-success-suite))
