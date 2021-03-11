@@ -24,7 +24,7 @@
      '(:screen-change-notify-mask :crtc-change-notify-mask))
     (xlib:display-finish-output display)))
 
-(defun setup-window-manager! ()
+(defun setup! ()
   (with-catch (err (log-fatal-error! err))
     (multiple-value-bind (display screen root) (open-x11!)
       (check-other-wm! display root)
