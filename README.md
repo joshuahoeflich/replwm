@@ -45,22 +45,3 @@ Note that the project isn't finished yet, so `make build` is a stub.
 
 ## Testing
 Instead of relying on a framework like 5AM, we use a simple, composable testing library called `wm-test` that lives in `src/wm-test`.
-
-
-## Style Guide
-- Use the `with` macro instead of `let/let*` in the project. If you're familiar with Clojure, `with` works the way [let does in that language](https://clojuredocs.org/clojure.core/let) modulo the difference between vectors and lists; if that documentation doesn't help, feel free to ask the maintainer for help.
-- Use `with-catch` instead of `handler-case` unless you specifically need to handle multiple separate errors. Instead of writing:
-    ```lisp
-    (handler-case
-      (progn
-        (format t "Hello!~%")
-        (error "This creates an error :("))
-      (t (err) (format t "Error: ~A~%" err)))
-    ```
-Simply write:
-```lisp
-(with-catch (err (format t "Error: ~A~%" err))
-  (format t "Hello!~%")
-  (error "This creates an error :("))
-```
-Again, feel free to reach out to the maintainer if you find the macro confusing.

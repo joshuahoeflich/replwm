@@ -1,21 +1,24 @@
 (in-package #:replwm-tests)
 
-;; Because running this suite requires the presense of another window manager,
-;; we don't yet execute it in our CI pipeline. Pull requests welcome for that
-;; use case!
+(defun stringify-stderr (fn)
+  (let ((*error-output* (make-string-output-stream)))
+    (funcall fn)
+    (get-output-stream-string *error-output*)))
+
+;; Because running this suite requires another window manager to exist on
+;; DISPLAY :0, we don't yet execute it in our CI pipeline. Pull requests
+;; welcome!
 (defsuite startup-error-suite
   (test
-   (string=
-    (with (*error-output* (make-string-output-stream))
-          (setup-window-manager!)
-          (get-output-stream-string *error-output*))
-    (format nil
-            "Fatal error on startup: Another window manager is running.~%Exiting replwm.")))
+   (string= (format nil "Another window manager is running.~%")
+            (stringify-stderr #'setup-replwm!)))
   (sb-posix:setenv "DISPLAY" ":2" 1)
-  (test (string=
-         (with (*error-output* (make-string-output-stream))
-               (setup-window-manager!)
-               (get-output-stream-string *error-output*))
-         (format nil "Fatal error on startup: Couldn't open X11.~%Exiting replwm.")))
+  (test
+   (string= (format nil "Could not connect to X11.~%")
+            (stringify-stderr #'setup-replwm!)))
   (sb-posix:setenv "DISPLAY" ":0" 1))
 
+(defsuite startup-success-suite
+  (sb-posix:setenv "DISPLAY" ":1" 1)
+  (test (wm-state-p (setup-replwm!)))
+  (sb-posix:setenv "DISPLAY" ":0" 1))

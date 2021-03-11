@@ -1,6 +1,6 @@
 (defpackage #:replwm
   (:use #:common-lisp)
-  (:export #:with #:with-catch #:setup-window-manager!))
+  (:export #:setup-replwm! #:wm-state-p))
 
 (defpackage #:replwm-tests
   (:use #:common-lisp
