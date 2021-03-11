@@ -11,12 +11,11 @@
           (get-output-stream-string *error-output*))
     (format nil
             "Fatal error on startup: Another window manager is running.~%Exiting replwm.")))
-  )
+  (sb-posix:setenv "DISPLAY" ":2" 1)
+  (test (string=
+         (with (*error-output* (make-string-output-stream))
+               (setup-window-manager!)
+               (get-output-stream-string *error-output*))
+         (format nil "Fatal error on startup: Couldn't open X11.~%Exiting replwm.")))
+  (sb-posix:setenv "DISPLAY" ":0" 1))
 
-
-
-
-
-
-(defsuite setup-suite
-  )
