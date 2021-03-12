@@ -3,6 +3,8 @@
   (:export
    #:wm
    #:make-wm
+   #:make-on-event
+   #:make-on-exit
    #:make-wm-handlers
    #:make-wm-connection
    #:make-handle-exit
