@@ -1,6 +1,11 @@
 (in-package #:replwm)
 
-(defstruct wm-state display screen root)
+(defstruct wm-state
+  display
+  screen
+  root
+  on-event
+  on-exit)
 
 (defun create-wm-state! ()
   (let* ((display (xlib:open-default-display))
@@ -9,7 +14,9 @@
     (make-wm-state
      :display display
      :screen screen
-     :root root)))
+     :root root
+     :on-event #'handle-x11-event!
+     :on-exit #'clean-up-wm!)))
 
 (defmethod check-other-wm! ((state wm-state))
   (let ((display (wm-state-display state))
