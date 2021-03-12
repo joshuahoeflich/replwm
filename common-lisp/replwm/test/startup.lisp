@@ -1,30 +1,27 @@
 (in-package #:replwm-tests)
 
+(defmacro stringify-stderr (&body code)
+  `(let ((*error-output* (make-string-output-stream)))
+     ,@code
+     (get-output-stream-string *error-output*)))
+
 (defsuite startup-error-suite
   (test
    (string= (format nil "Could not connect to X11.~%")
-            (let ((*error-output* (make-string-output-stream)))
+            (stringify-stderr
               (catch-startup-errors
-               (lambda ()
-                 (sb-bsd-sockets:socket-error "Socket connection error.")))
-              (get-output-stream-string *error-output*))))
+               (lambda () (sb-bsd-sockets:socket-error "Socket connection error."))))))
   (test
    (string= (format nil "Another window manager is running.~%")
-            (let ((*error-output* (make-string-output-stream)))
-              (catch-startup-errors (lambda () (signal 'xlib:access-error)))
-              (get-output-stream-string *error-output*))))
-  (test (string= "Unexpected error thrown."
-                 (handler-case
-                     (catch-startup-errors
-                      (lambda ()
-                        (error "Unexpected error thrown.")))
-                   (t (err) (format nil "~A" err)))))
-  (test (string= "We passed along the argument: hooray!"
-                 (handler-case
-                     (catch-startup-errors
-                      (lambda (word)
-                        (error (concatenate 'string
-                                            "We passed along the argument: "
-                                            word)))
-                      "hooray!")
-                   (t (err) (format nil "~A" err))))))
+            (stringify-stderr
+              (catch-startup-errors
+               (lambda () (signal 'xlib:access-error))))))
+  (test (string= (format nil "Unexpected error: Success.~%")
+                 (stringify-stderr
+                   (catch-startup-errors
+                    (lambda () (error "Success."))))))
+  (test (string= (format nil "Unexpected error: Args passed.~%")
+                 (stringify-stderr
+                   (catch-startup-errors
+                    (lambda (arg) (error (format nil "Args ~A." arg)))
+                    "passed")))))

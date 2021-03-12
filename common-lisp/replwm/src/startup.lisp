@@ -37,4 +37,5 @@
     (sb-bsd-sockets:socket-error ()
       (format *error-output* "Could not connect to X11.~%"))
     (xlib:access-error ()
-      (format *error-output* "Another window manager is running.~%"))))
+      (format *error-output* "Another window manager is running.~%"))
+    (t (err) (format *error-output* "Unexpected error: ~A~%" err))))
