@@ -25,7 +25,7 @@
                :until (eq event :quit))
       (funcall exit-handler! state))))
 
-(defun start ()
+(defun start (&optional (display ":0"))
   (event-loop
-      (or (catch-startup-errors #'setup-replwm!)
+      (or (catch-startup-errors #'setup-replwm! :display display)
           (return-from start))))

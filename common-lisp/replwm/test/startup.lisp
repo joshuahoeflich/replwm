@@ -18,4 +18,13 @@
                      (catch-startup-errors
                       (lambda ()
                         (error "Unexpected error thrown.")))
+                   (t (err) (format nil "~A" err)))))
+  (test (string= "We passed along the argument: hooray!"
+                 (handler-case
+                     (catch-startup-errors
+                      (lambda (word)
+                        (error (concatenate 'string
+                                            "We passed along the argument: "
+                                            word)))
+                      "hooray!")
                    (t (err) (format nil "~A" err))))))
