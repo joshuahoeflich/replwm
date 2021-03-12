@@ -6,6 +6,7 @@
 (defun create-mock-wm ()
   (make-wm
    :handlers (make-wm-handlers
+              :handle-list nil
               :on-event (key-fn :event-ran)
               :on-exit (key-fn :quit-ran))
    :connection (make-wm-connection
@@ -14,6 +15,7 @@
                 :root 'root)))
 
 (defsuite accessor-suite
+  (test (eq nil (wm-handle-list (create-mock-wm))))
   (test (eq 'display (wm-display (create-mock-wm))))
   (test (eq 'screen (wm-screen (create-mock-wm))))
   (test (eq 'root (wm-root (create-mock-wm))))

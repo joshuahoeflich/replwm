@@ -11,6 +11,7 @@
    #:wm-display
    #:wm-screen
    #:wm-root
+   #:wm-handle-list
    #:wm-on-event
    #:wm-on-exit
    #:catch-startup-errors
