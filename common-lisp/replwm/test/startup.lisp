@@ -7,7 +7,7 @@
 
 (defsuite startup-error-suite
   (test
-   (string= (format nil "Could not connect to X11.~%")
+   (string= (format nil "Could not connect to an X server.~%")
             (stringify-stream *error-output*
               (catch-startup-errors
                (lambda () (sb-bsd-sockets:socket-error "Socket connection error."))))))

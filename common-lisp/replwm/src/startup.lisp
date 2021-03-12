@@ -35,7 +35,7 @@
 (defun catch-startup-errors (fn &rest args)
   (handler-case (apply fn args)
     (sb-bsd-sockets:socket-error ()
-      (format *error-output* "Could not connect to X11.~%"))
+      (format *error-output* "Could not connect to an X server.~%"))
     (xlib:access-error ()
       (format *error-output* "Another window manager is running.~%"))
     (t (err) (format *error-output* "Unexpected error: ~A~%" err))))
