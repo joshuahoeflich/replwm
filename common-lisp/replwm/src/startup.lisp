@@ -23,7 +23,10 @@
     state))
 
 (defun setup-replwm! ()
-  (handler-case (check-other-wm! (create-wm-state!))
+  (check-other-wm! (create-wm-state!)))
+
+(defun catch-startup-errors (fn)
+  (handler-case (funcall fn)
     (sb-bsd-sockets:socket-error ()
       (format *error-output* "Could not connect to X11.~%"))
     (xlib:access-error ()

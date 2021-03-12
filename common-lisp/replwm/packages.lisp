@@ -1,6 +1,6 @@
 (defpackage #:replwm
   (:use #:common-lisp)
-  (:export #:setup-replwm! #:wm-state-p))
+  (:export #:catch-startup-errors))
 
 (defpackage #:replwm-tests
   (:use #:common-lisp
