@@ -1,29 +1,22 @@
 (in-package #:replwm-tests)
 
-(defmethod send-quit-mock ((state wm-state))
-  :quit)
+(defun mock-close-fn (display)
+  (format t "Display was: ~A" display))
 
-(defmethod error-mock ((state wm-state))
-  (error "An error was signaled."))
+(defun mock-process-fn (&rest args)
+  args)
 
-(defmethod on-exit-mock ((state wm-state))
-  (format t "We exited the wm with display ~A~%"
-          (wm-state-display state)))
+(defun make-null-connection ()
+  (make-wm-connection :display nil :screen nil :root nil))
 
-(defsuite event-loop-suite
-  (test (string=
-         (format nil "We exited the wm with display NIL~%")
-         (let ((*standard-output* (make-string-output-stream)))
-           (event-loop (make-wm-state :display nil :screen nil :root nil
-                                      :on-event #'send-quit-mock
-                                      :on-exit #'on-exit-mock))
-           (get-output-stream-string *standard-output*))))
-  (test (string=
-         (format nil "We exited the wm with display NIL~%An error ran!")
-         (let ((*standard-output* (make-string-output-stream)))
-           (handler-case
-               (event-loop (make-wm-state :display nil :screen nil :root nil
-                                          :on-event #'error-mock
-                                          :on-exit #'on-exit-mock))
-             (t () (format t "An error ran!")))
-           (get-output-stream-string *standard-output*)))))
+(defsuite connection-thunk-suite
+  (test (string= "Display was: NIL"
+                 (stringify-stream *standard-output*
+                   (funcall
+                    (make-on-exit (make-null-connection) #'mock-close-fn)))))
+  (test (eq :handler
+            (second (funcall (make-on-event (make-null-connection) #'mock-process-fn)))))
+  (test (= (length xlib::*event-key-vector*)
+            (length
+             (third
+              (funcall (make-on-event (make-null-connection) #'mock-process-fn)))))))
