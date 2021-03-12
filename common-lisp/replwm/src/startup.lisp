@@ -7,12 +7,12 @@
   on-event
   on-exit)
 
-(defun create-wm-state! ()
-  (let* ((display (xlib:open-default-display))
-         (screen (xlib:display-default-screen display))
+(defun create-wm-state! (&key (display ":0"))
+  (let* ((x-display (xlib:open-default-display display))
+         (screen (xlib:display-default-screen x-display))
          (root (xlib:screen-root screen)))
     (make-wm-state
-     :display display
+     :display x-display
      :screen screen
      :root root
      :on-event #'handle-x11-event!
@@ -29,11 +29,11 @@
     (xlib:display-finish-output display)
     state))
 
-(defun setup-replwm! ()
-  (check-other-wm! (create-wm-state!)))
+(defun setup-replwm! (&key (display ":0"))
+  (check-other-wm! (create-wm-state! :display display)))
 
-(defun catch-startup-errors (fn)
-  (handler-case (funcall fn)
+(defun catch-startup-errors (fn &rest args)
+  (handler-case (apply fn args)
     (sb-bsd-sockets:socket-error ()
       (format *error-output* "Could not connect to X11.~%"))
     (xlib:access-error ()
