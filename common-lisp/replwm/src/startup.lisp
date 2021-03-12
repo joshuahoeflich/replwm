@@ -28,11 +28,3 @@
       (format *error-output* "Could not connect to X11.~%"))
     (xlib:access-error ()
       (format *error-output* "Another window manager is running.~%"))))
-
-;; (defun handle-x11-event! (display screen root)
-;;   (declare (ignore display screen root))
-;;   :quit)
-
-;; (defun event-loop (display screen root)
-;;   (loop :for event = (handle-x11-event! display screen root)
-;;         :until (eq event :quit)))

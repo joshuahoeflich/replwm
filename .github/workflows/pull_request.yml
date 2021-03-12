@@ -17,6 +17,8 @@ jobs:
       run: make test-tests
     - name: Install Xvfb
       run: sudo apt-get install xvfb
+    - name: Install bspwm
+      run: sudo apt-get install bspwm
     - name: Compile the project
       run: make compile-project
     - name: Test the Window Manager
