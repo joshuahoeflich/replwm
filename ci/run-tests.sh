@@ -5,4 +5,4 @@ DISPLAY=":0" CL_SOURCE_REGISTRY="$REGISTRY_PATHS" sbcl --noinform \
    --non-interactive \
    --load "$PWD"/ci/system.lisp \
    --eval "(in-package #:replwm-tests)" \
-   --eval "(run-suites-and-exit startup-error-suite event-loop-suite)"
+   --eval "(run-suites-and-exit accessor-suite startup-error-suite)"

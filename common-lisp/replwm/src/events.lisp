@@ -1,31 +1,30 @@
 (in-package #:replwm)
 
 (defun to-quit-key (&rest args)
-  (declare (ignore args))
+  (format t "Args to handler: ~A~%" args)
   :quit)
 
-(defmethod make-event-handlers ((state wm-state))
-  (declare (ignore state))
-  (make-list (length xlib::*event-key-vector*)
-             :initial-element #'to-quit-key))
+(defun create-handlers ()
+  (make-list
+   (length xlib::*event-key-vector*)
+   :initial-element #'to-quit-key))
 
-(defmethod handle-x11-event! ((state wm-state))
-  (xlib:process-event (wm-state-display state)
-                      :handler (make-event-handlers state)
-                      :discard-p t))
+(defmethod make-on-exit ((conn wm-connection) close-fn)
+  (let ((display (wm-connection-display conn)))
+    (lambda ()
+      (funcall close-fn display))))
 
-(defmethod clean-up-wm! ((state wm-state))
-  (xlib:close-display (wm-state-display state)))
+(defmethod make-on-event ((conn wm-connection) process-fn)
+  (let ((handlers (create-handlers))
+        (display (wm-connection-display conn)))
+    (lambda ()
+      (funcall
+       process-fn
+       display
+       :handler handlers
+       :discard-p t))))
 
-(defmethod event-loop ((state wm-state))
-  (let ((event-handler! (wm-state-on-event state))
-        (exit-handler! (wm-state-on-exit state)))
-    (unwind-protect
-         (loop :for event = (funcall event-handler! state)
-               :until (eq event :quit))
-      (funcall exit-handler! state))))
-
-(defun start (&optional (display ":0"))
-  (event-loop
-      (or (catch-startup-errors #'setup-replwm! :display display)
-          (return-from start))))
+(defmethod create-wm-handlers ((conn wm-connection))
+  (make-wm-handlers
+   :on-event (make-on-event conn #'xlib:process-event)
+   :on-exit (make-on-exit conn #'xlib:close-display)))
