@@ -1,6 +1,8 @@
 .PHONY: build
 build: ## Compile the project.
-	@ sh ci/build.sh
+	@ mkdir -p "dist"
+	@ sbcl --noinform --non-interactive --load ci/compile.lisp
+	@ mv replwm dist
 
 .PHONY: help
 help: ## Display this help message and then exit.
@@ -8,8 +10,8 @@ help: ## Display this help message and then exit.
 
 .PHONY: test
 test:
-	@ sh ci/test-tests.sh
-	@ sh ci/run-tests.sh
+	@ cd common-lisp/wm-test && sbcl --script wm-test-check-lib.lisp
+	@ sbcl --script ci/test.lisp
 
 .PHONY: clean
 clean:
