@@ -13,9 +13,7 @@ jobs:
         submodules: recursive
     - name: Install SBCL
       run: sh ci/install-sbcl.sh
-    - name: Test Testing Library
-      run: make test-tests
     - name: Compile the project
       run: make compile-project
-    - name: Test the Window Manager
-      run: make test-wm
+    - name: Test
+      run: make test-tests && make test-wm
