@@ -13,6 +13,8 @@ jobs:
         submodules: recursive
     - name: Install SBCL
       run: sh ci/install-sbcl.sh
+    - name: Setup Environment
+      uses: HatsuneMiku3939/direnv-action@v1
     - name: Build the project
       run: make build
     - name: Test
