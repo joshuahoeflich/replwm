@@ -1,3 +1,6 @@
+### Project Binaries ###
+dist/*
+
 # Created by https://www.toptal.com/developers/gitignore/api/CommonLisp
 # Edit at https://www.toptal.com/developers/gitignore?templates=CommonLisp
 

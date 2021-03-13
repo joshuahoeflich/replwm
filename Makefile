@@ -10,3 +10,7 @@ help: ## Display this help message and then exit.
 test:
 	@ sh ci/test-tests.sh
 	@ sh ci/run-tests.sh
+
+.PHONY: clean
+clean:
+	@ rm -rf dist/*
