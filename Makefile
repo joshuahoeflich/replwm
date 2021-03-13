@@ -1,6 +1,6 @@
 .PHONY: build
 build: ## Compile the project.
-	@ :
+	@ sh ci/build.sh
 
 .PHONY: help
 help: ## Display this help message and then exit.

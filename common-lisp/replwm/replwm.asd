@@ -3,7 +3,8 @@
   :components ((:file "src/packages")
                (:file "src/state")
                (:file "src/startup")
-               (:file "src/events")))
+               (:file "src/events")
+               (:file "src/main")))
 
 (asdf:defsystem #:replwm/test
   :serial t

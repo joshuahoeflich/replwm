@@ -1,0 +1,5 @@
+(common-lisp:require "asdf")
+(common-lisp:require 'sb-posix)
+(asdf:load-system "clx")
+(asdf:load-system "replwm")
+(sb-ext:save-lisp-and-die "replwm" :toplevel #'replwm:start :executable t)
