@@ -10,7 +10,3 @@ help: ## Display this help message and then exit.
 test:
 	@ sh ci/test-tests.sh
 	@ sh ci/run-tests.sh
-
-.PHONY: compile-project
-compile-project: ## Compile the code in our project.
-	@ sh ci/compile-project.sh

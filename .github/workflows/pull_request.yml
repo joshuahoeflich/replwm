@@ -13,8 +13,6 @@ jobs:
         submodules: recursive
     - name: Install SBCL
       run: sh ci/install-sbcl.sh
-    - name: Compile the project
-      run: make compile-project
     - name: Build the project
       run: make build
     - name: Test
