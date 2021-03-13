@@ -16,4 +16,4 @@ jobs:
     - name: Compile the project
       run: make compile-project
     - name: Test
-      run: make test-tests && make test-wm
+      run: make test
