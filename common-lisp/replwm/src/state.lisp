@@ -7,7 +7,7 @@ or using the MOP tools SBCL provides.
 
 (defstruct wm-connection display screen root)
 
-(defstruct wm-handlers on-event on-exit)
+(defstruct wm-handlers handle-list on-event on-exit)
 
 (defstruct wm connection handlers)
 
@@ -25,3 +25,6 @@ or using the MOP tools SBCL provides.
 
 (defmethod wm-on-exit ((w wm))
   (wm-handlers-on-exit (wm-handlers w)))
+
+(defmethod wm-handle-list ((w wm))
+  (wm-handlers-handle-list (wm-handlers w)))
