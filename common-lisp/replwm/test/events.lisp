@@ -1,4 +1,4 @@
-(in-package #:replwm-tests)
+(in-package #:replwm)
 
 (defun mock-close-fn (display)
   (format t "Display was: ~A" display))

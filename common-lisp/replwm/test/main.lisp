@@ -1,4 +1,4 @@
-(in-package #:replwm-tests)
+(in-package #:replwm)
 
 (defun send-quit-mock ()
   :quit)

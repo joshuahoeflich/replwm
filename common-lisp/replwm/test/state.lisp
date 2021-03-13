@@ -1,4 +1,4 @@
-(in-package #:replwm-tests)
+(in-package #:replwm)
 
 (defun key-fn (key)
   (lambda () key))

@@ -1,4 +1,4 @@
-(in-package #:replwm-tests)
+(in-package #:replwm)
 
 (defmacro stringify-stream (stream &body code)
   `(let ((,stream (make-string-output-stream)))
