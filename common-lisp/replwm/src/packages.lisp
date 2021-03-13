@@ -1,2 +1,3 @@
 (defpackage #:replwm
-  (:use #:common-lisp))
+  (:use #:common-lisp)
+  (:export #:start))

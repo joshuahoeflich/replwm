@@ -12,10 +12,16 @@ jobs:
       with:
         submodules: recursive
     - name: Install SBCL
-      run: make install-sbcl
-    - name: Test Testing Library
-      run: make test-tests
-    - name: Compile the project
-      run: make compile-project
-    - name: Test the Window Manager
-      run: make test-wm
+      run: |
+        curl -LJ0 https://github.com/roswell/sbcl_bin/releases/download/2.1.1/sbcl-2.1.1-x86-64-linux-binary.tar.bz2 > sbcl.tar.bz2
+        tar -xvf sbcl.tar.bz2
+        cd sbcl-2.1.1-x86-64-linux || exit 1
+        sudo sh install.sh
+        cd .. || exit 1
+        rm -rf sbcl-2.1.1-x86-64-linux
+    - name: Setup Environment
+      uses: HatsuneMiku3939/direnv-action@v1
+    - name: Build the project
+      run: make build
+    - name: Test
+      run: make test
