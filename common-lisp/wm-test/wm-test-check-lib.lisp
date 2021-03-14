@@ -101,9 +101,7 @@
                    (format nil "~A" (composed-suite))))
 
   (defsuite success-suite
-    (test t))
-
-  (assert (suite-results-p (run-suites success-suite)))
+    (test t)) 
 
   (assert (not (suite-problems-p (success-suite))))
   (assert (not (suite-problems-p (my-other-suite))))

@@ -1,9 +1,30 @@
 (defpackage #:wm-test
   (:use #:common-lisp)
-  (:export #:xtest #:test #:defsuite #:suite
-           #:run-suites #:run-suites-and-exit))
+  (:export #:xtest #:test #:defsuite #:suite #:run-suites))
 
 (in-package #:wm-test)
+
+(defun write-green (string)
+  (format t "~c[~A~A~c[~A~%" #\ESC "32m" string #\ESC "0m"))
+
+(defun log-error (s-exp err)
+  (format t
+          "~%~c[~A~c[~ATest errored:~c[~A~%~A~%~c[~A~c[~AError was:~c[~A ~A~%"
+          #\ESC "1m" #\ESC "31m" #\ESC "0m" s-exp
+          #\ESC "1m" #\ESC "31m" #\ESC "0m" err))
+
+(defun log-failure (s-exp)
+  (format t
+          "~%~c[~A~c[~ATest failed:~c[~A~%~A"
+          #\ESC "1m" #\ESC "31m" #\ESC "0m" s-exp))
+
+(defun handle-test-values (result s-exp err)
+  (cond
+    ((not (null err))
+     (log-error s-exp err))
+    ((eq result :fail)
+     (log-failure s-exp)))
+  result)
 
 (defmacro xtest-values (exp)
   (declare (ignore exp))
@@ -12,12 +33,6 @@
 (defmacro test-values (exp)
   `(handler-case (values (if ,exp :pass :fail) ',exp nil)
      (t (err) (values :error ',exp err))))
-
-(defun handle-test-values (result s-exp err)
-  (cond
-    ((not (null err)) (format t "Form ~a errored: ~a~%" s-exp err))
-    ((eq result :fail) (format t "Test failed: ~a~%" s-exp)))
-  result)
 
 (defmacro xtest (exp &key (handler 'handle-test-values))
   (declare (ignore exp handler))
@@ -79,19 +94,20 @@
 (defmacro defsuite (name &body body)
   `(defun ,name () (suite ,@body)))
 
-(defmacro run-suites (&rest suite-names)
-  `(progn
-     (format t "Running test suites: ~@{~A~^, ~}~%" ,@(mapcar #'symbol-name suite-names))
-     (reduce #'update-suite-results!
-                             (list ,@(mapcar #'list suite-names))
-                             :initial-value (make-suite-results))))
-
 (defun suite-problems-p (suite-result)
   (or
    (> (suite-results-failed suite-result) 0)
    (> (suite-results-errored suite-result) 0)))
 
-(defmacro run-suites-and-exit (&rest suite-names)
-  `(let ((results (run-suites ,@suite-names)))
-     (format t "~A" results)
-     (sb-ext:exit :code (if (suite-problems-p results) 1 0))))
+(defun run-suite (s)
+  (format t "Running ~A... " (string-downcase (symbol-name s)))
+  (if (suite-problems-p (funcall s))
+      (sb-ext:exit :code 1)
+      (write-green "success ✓")))
+
+(defmacro run-suites (&rest suite-names)
+  `(progn
+     (dolist (s ',suite-names)
+       (run-suite s))
+     (write-green "All tests passed.")
+     (sb-ext:exit :code 0)))

@@ -30,10 +30,3 @@
            (handler-case
                (event-loop (make-event-loop-mock #'on-error-mock))
              (t () (format t "An error ran!")))))))
-
-(defsuite main-suite
-  (startup-error-suite)
-  (connection-thunk-suite)
-  (handler-suite)
-  (accessor-suite)
-  (event-loop-suite))
