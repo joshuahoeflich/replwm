@@ -2,9 +2,8 @@
   :serial t
   :components ((:file "src/packages")
                (:file "src/state")
-               (:file "src/startup")
-               (:file "src/handlers")
                (:file "src/events")
+               (:file "src/startup")
                (:file "src/main")))
 
 (asdf:defsystem #:replwm/test
@@ -14,8 +13,6 @@
                (:file "test/state")
                (:file "src/startup")
                (:file "test/startup")
-               (:file "src/handlers")
-               (:file "test/handlers")
                (:file "src/events")
                (:file "test/events")
                (:file "src/main")

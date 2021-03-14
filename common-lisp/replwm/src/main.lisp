@@ -8,12 +8,6 @@
                :until (eq event :quit))
       (funcall exit-handler!))))
 
-(defun setup-replwm! (&key (display ":0"))
-  (let ((conn (create-wm-connection! :display display)))
-    (make-wm
-     :connection conn
-     :handlers (create-wm-handlers conn))))
-
 (defun start (&optional (display ":0"))
   (event-loop
       (or (catch-startup-errors #'setup-replwm! :display display)

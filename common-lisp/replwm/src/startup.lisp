@@ -1,5 +1,11 @@
 (in-package #:replwm)
 
+(defvar *wm-state* nil
+  "Global singleton holding all window manager state.
+If you want to play with the internals of the window manager while
+hacking at a REPL, feel free to modify this variable there at your
+whim. Otherwise, prefer less stateful abstractions.")
+
 (defun check-other-wm! (display root)
   (setf (xlib:window-event-mask root)
         '(:substructure-notify :substructure-redirect))
@@ -17,6 +23,18 @@
      :display x-display
      :screen screen
      :root root)))
+
+(defmethod create-wm-handlers ((conn wm-connection))
+  (make-wm-handlers
+   :on-event (make-on-event conn #'xlib:process-event)
+   :on-exit (make-on-exit conn #'xlib:close-display)))
+
+(defun setup-replwm! (&key (display ":0"))
+  (let ((conn (create-wm-connection! :display display)))
+    (setf *wm-state*
+          (make-wm
+           :connection conn
+           :handlers (create-wm-handlers conn)))))
 
 (defun catch-startup-errors (fn &rest args)
   (handler-case (apply fn args)

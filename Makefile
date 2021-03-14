@@ -21,6 +21,10 @@ clean: ## Clean all binaries associated with the project.
 help: ## Display this help message and then exit.
 	@ sbcl --script dev/help.lisp
 
+.PHONY: xrepl
+xrepl: ## Launch Xephyr on display 1. Useful for hacking on WM internals.
+	@ DISPLAY=":0" Xephyr :1 &
+
 .PHONY: test-watch
 test-watch: ## Run the project's tests in watch mode. Depends on entr and node.
 	@ node dev/list-files.js | entr -r -c sh dev/test-watch.sh
