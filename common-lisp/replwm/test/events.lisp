@@ -21,9 +21,8 @@
              (third
               (funcall (make-on-event (make-null-connection) #'mock-process-fn)))))))
 
-
 (defsuite handler-suite
   (test (eq :map-request
             (elt
              xlib::*event-key-vector*
-             (position 'map-request (register-handlers))))))
+             (position #'map-request (register-handlers))))))

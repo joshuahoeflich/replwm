@@ -21,7 +21,7 @@ the right value at runtime.
 (defun find-handler-fn (keyword)
   (let ((keyfn (intern (string keyword))))
     (or
-     (and (fboundp keyfn) keyfn)
+     (and keyfn (fboundp keyfn) (symbol-function keyfn))
      #'void)))
 
 (defun register-handlers ()
