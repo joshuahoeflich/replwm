@@ -32,12 +32,11 @@ the right value at runtime.
     (lambda ()
       (funcall close-fn display))))
 
-(defmethod make-on-event ((conn wm-connection) process-fn)
-  (let ((handlers (register-handlers))
-        (display (wm-connection-display conn)))
-    (lambda ()
-      (funcall
-       process-fn
-       display
-       :handler handlers
-       :discard-p t))))
+(defmethod make-on-event
+    ((handlers wm-handlers) conn process-fn)
+  (lambda ()
+    (funcall
+     process-fn
+     (wm-connection-display conn)
+     :handler (wm-handlers-handle-list handlers)
+     :discard-p t)))
