@@ -1,15 +1,28 @@
 (in-package #:replwm)
 
-(defun to-quit-key (&rest args)
-  (format t "Args to handler: ~A~%" args)
+#|
+Creating an X11 event handler is as easy as writing a function with
+the name of the keyword CLX associates with that event (e.g., the
+:map-notify keyword corresponds to the map-notify function). If
+you need to access global window manager state in your handler,
+add a "wm" key with *wm-state* as the default argument; that way,
+you can test the function in isolation, and REPLWM will give you
+the right value at runtime.
+|#
+
+(defun map-request (&key window (wm *wm-state*) &allow-other-keys)
+  (format t "window is ~S~%" window)
+  (format t "wm state is ~S~%" wm)
   :quit)
+
+(defun void (&rest args)
+  (declare (ignore args)))
 
 (defun find-handler-fn (keyword)
   (let ((keyfn (intern (string keyword))))
     (or
-     (and (fboundp keyfn)
-          (symbol-function keyfn))
-     #'to-quit-key)))
+     (and keyfn (fboundp keyfn) (symbol-function keyfn))
+     #'void)))
 
 (defun register-handlers ()
   (map 'list #'find-handler-fn xlib::*event-key-vector*))
@@ -19,17 +32,11 @@
     (lambda ()
       (funcall close-fn display))))
 
-(defmethod make-on-event ((conn wm-connection) process-fn)
-  (let ((handlers (register-handlers))
-        (display (wm-connection-display conn)))
-    (lambda ()
-      (funcall
-       process-fn
-       display
-       :handler handlers
-       :discard-p t))))
-
-(defmethod create-wm-handlers ((conn wm-connection))
-  (make-wm-handlers
-   :on-event (make-on-event conn #'xlib:process-event)
-   :on-exit (make-on-exit conn #'xlib:close-display)))
+(defmethod make-on-event
+    ((handlers wm-handlers) conn process-fn)
+  (lambda ()
+    (funcall
+     process-fn
+     (wm-connection-display conn)
+     :handler (wm-handlers-handle-list handlers)
+     :discard-p t)))

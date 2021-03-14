@@ -6,6 +6,9 @@
 (defun mock-process-fn (&rest args)
   args)
 
+(defun make-null-handlers ()
+  (make-wm-handlers :handle-list (register-handlers) :on-event nil :on-exit nil))
+
 (defun make-null-connection ()
   (make-wm-connection :display nil :screen nil :root nil))
 
@@ -15,8 +18,19 @@
                    (funcall
                     (make-on-exit (make-null-connection) #'mock-close-fn)))))
   (test (eq :handler
-            (second (funcall (make-on-event (make-null-connection) #'mock-process-fn)))))
+            (second (funcall (make-on-event (make-null-handlers)
+                                            (make-null-connection)
+                                            #'mock-process-fn)))))
   (test (= (length xlib::*event-key-vector*)
-            (length
-             (third
-              (funcall (make-on-event (make-null-connection) #'mock-process-fn)))))))
+           (length
+            (third
+             (funcall (make-on-event
+                       (make-null-handlers)
+                       (make-null-connection)
+                       #'mock-process-fn)))))))
+
+(defsuite handler-suite
+  (test (eq :map-request
+            (elt
+             xlib::*event-key-vector*
+             (position #'map-request (register-handlers))))))

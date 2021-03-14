@@ -18,6 +18,22 @@
      :screen screen
      :root root)))
 
+(defmethod create-wm-handlers ((conn wm-connection))
+  (let ((handlers
+          (make-wm-handlers
+           :handle-list (register-handlers)
+           :on-exit (make-on-exit conn #'xlib:close-display))))
+    (setf (wm-handlers-on-event handlers)
+          (make-on-event handlers conn #'xlib:process-event))
+    handlers))
+
+(defun setup-replwm! (&key (display ":0"))
+  (let ((conn (create-wm-connection! :display display)))
+    (setf *wm-state*
+          (make-wm
+           :connection conn
+           :handlers (create-wm-handlers conn)))))
+
 (defun catch-startup-errors (fn &rest args)
   (handler-case (apply fn args)
     (sb-bsd-sockets:socket-error ()
