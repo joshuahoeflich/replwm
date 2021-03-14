@@ -1,11 +1,5 @@
 (in-package #:replwm)
 
-(defvar *wm-state* nil
-  "Global singleton holding all window manager state.
-If you want to play with the internals of the window manager while
-hacking at a REPL, feel free to modify this variable there at your
-whim. Otherwise, prefer less stateful abstractions.")
-
 (defun check-other-wm! (display root)
   (setf (xlib:window-event-mask root)
         '(:substructure-notify :substructure-redirect))

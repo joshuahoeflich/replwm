@@ -1,5 +1,11 @@
 (in-package #:replwm)
 
+(defvar *wm-state* nil
+  "Global singleton holding all window manager state.
+If you want to play with the internals of the window manager while
+hacking at a REPL, feel free to modify this variable there at your
+whim. Otherwise, prefer less stateful abstractions.")
+
 #|
 If these accessors become tedious to maintain, consider writing a macro
 or using the MOP tools SBCL provides.
