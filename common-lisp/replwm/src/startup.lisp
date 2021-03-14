@@ -24,7 +24,8 @@
            :handle-list (register-handlers)
            :on-exit (make-on-exit conn #'xlib:close-display))))
     (setf (wm-handlers-on-event handlers)
-          (make-on-event handlers conn #'xlib:process-event))))
+          (make-on-event handlers conn #'xlib:process-event))
+    handlers))
 
 (defun setup-replwm! (&key (display ":0"))
   (let ((conn (create-wm-connection! :display display)))
