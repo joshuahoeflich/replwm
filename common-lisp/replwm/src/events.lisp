@@ -1,19 +1,5 @@
 (in-package #:replwm)
 
-(defun to-quit-key (&rest args)
-  (format t "Args to handler: ~A~%" args)
-  :quit)
-
-(defun find-handler-fn (keyword)
-  (let ((keyfn (intern (string keyword))))
-    (or
-     (and (fboundp keyfn)
-          (symbol-function keyfn))
-     #'to-quit-key)))
-
-(defun register-handlers ()
-  (map 'list #'find-handler-fn xlib::*event-key-vector*))
-
 (defmethod make-on-exit ((conn wm-connection) close-fn)
   (let ((display (wm-connection-display conn)))
     (lambda ()

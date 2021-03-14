@@ -34,5 +34,6 @@
 (defsuite main-suite
   (startup-error-suite)
   (connection-thunk-suite)
+  (handler-suite)
   (accessor-suite)
   (event-loop-suite))

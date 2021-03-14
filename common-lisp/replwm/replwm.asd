@@ -3,6 +3,7 @@
   :components ((:file "src/packages")
                (:file "src/state")
                (:file "src/startup")
+               (:file "src/handlers")
                (:file "src/events")
                (:file "src/main")))
 
@@ -13,6 +14,8 @@
                (:file "test/state")
                (:file "src/startup")
                (:file "test/startup")
+               (:file "src/handlers")
+               (:file "test/handlers")
                (:file "src/events")
                (:file "test/events")
                (:file "src/main")
